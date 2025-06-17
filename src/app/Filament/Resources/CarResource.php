@@ -37,7 +37,11 @@ class CarResource extends Resource
                     ->label('Клиент'),
 
                 TextInput::make('plate_number')
-                    ->label('Номер авто')
+                    ->label('Гос. номер')
+                    ->mask('A999AA 999')
+                    ->placeholder('A123BC 102')
+                    ->maxLength(10)
+
                     ->required(),
 
                 TextInput::make('brand')->label('Марка')->nullable(),

@@ -37,8 +37,10 @@ class ClientResource extends Resource
 
                 TextInput::make('phone')
                     ->label('Телефон')
+                    ->mask('+7 (999) 999-99-99')
                     ->tel()
-                    ->maxLength(255),
+                    ->placeholder('+7 (___) ___-__-__')
+                    ->maxLength(18),
 
                 TextInput::make('email')
                     ->label('Email')
