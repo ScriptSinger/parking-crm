@@ -22,6 +22,10 @@ class EventLogResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationLabel = 'Журнал событий';
+    protected static ?string $pluralModelLabel = 'Журнал событий';
+    protected static ?string $modelLabel = 'Журнал событий';
+
     public static function form(Form $form): Form
     {
         return $form

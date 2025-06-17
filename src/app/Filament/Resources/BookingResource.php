@@ -98,11 +98,21 @@ class BookingResource extends Resource
                     'success' => 'arrived',
                     'gray'    => 'departed',
                     'danger'  => 'no_show',
-                ]),
+                ])->formatStateUsing(function (string $state): string {
+                    return match ($state) {
+                        'reserved' => 'Забронировано',
+                        'arrived' => 'Прибыл',
+                        'departed' => 'Уехал',
+                        'no_show' => 'Не приехал',
+                        default => $state,
+                    };
+                }),
+
+
                 TextColumn::make('payment_status')->label('Оплата')->badge()->colors([
                     'danger'  => 'unpaid',
                     'success' => 'paid',
-                ]),
+                ])->formatStateUsing(fn($state) => $state === 'paid' ? 'Оплачено' : 'Не оплачено'),
                 TextColumn::make('price')->label('Цена')->money('RUB'),
             ])
             ->defaultSort('arrival_date', 'desc')

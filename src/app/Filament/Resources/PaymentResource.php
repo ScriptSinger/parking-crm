@@ -22,23 +22,31 @@ class PaymentResource extends Resource
 {
     protected static ?string $model = Payment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+
+    protected static ?string $navigationLabel = 'Платежи';
+    protected static ?string $pluralModelLabel = 'Платежи';
+    protected static ?string $modelLabel = 'Платежи';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make('booking_id')
+                    ->label('Бронирование')
                     ->relationship('booking', 'id')
                     ->searchable()
                     ->required(),
 
                 TextInput::make('amount')
+                    ->label('Сумма')
                     ->numeric()
                     ->required()
                     ->prefix('₽'),
 
                 Select::make('method')
+                    ->label('Способ оплаты')
                     ->options([
                         'cash' => 'Наличные',
                         'card' => 'Карта',
@@ -47,6 +55,7 @@ class PaymentResource extends Resource
                     ->required(),
 
                 DateTimePicker::make('paid_at')
+                    ->label('Дата оплаты')
                     ->required(),
             ]);
     }
@@ -56,10 +65,11 @@ class PaymentResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('booking.id')->label('Бронирование')->sortable(),
-                TextColumn::make('amount')->money('RUB', true),
+                TextColumn::make('amount')->label('Сумма')->money('RUB', true),
 
 
                 TextColumn::make('method')
+                    ->label('Способ оплаты')
                     ->badge()
                     ->formatStateUsing(fn(string $state) => match ($state) {
                         'cash' => 'Наличные',
@@ -72,8 +82,8 @@ class PaymentResource extends Resource
                         'online' => 'warning',
                     }),
 
-                TextColumn::make('paid_at')->dateTime(),
-                TextColumn::make('created_at')->since(),
+                TextColumn::make('paid_at')->label('Дата оплаты')->dateTime(),
+                TextColumn::make('created_at')->label('Создано')->since(),
 
             ])
             ->filters([
