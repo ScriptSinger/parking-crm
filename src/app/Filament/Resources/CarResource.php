@@ -36,13 +36,11 @@ class CarResource extends Resource
                     ->required()
                     ->label('Клиент'),
 
-                TextInput::make('plate_number')
-                    ->label('Гос. номер')
-                    ->mask('A999AA 999')
-                    ->placeholder('A123BC 102')
-                    ->maxLength(10)
-
-                    ->required(),
+                TextInput::make('number')
+                    ->label('Госномер')
+                    ->placeholder('Введите номер автомобиля в свободной форме')
+                    ->helperText('Поддерживаются номера всех стран. Без ограничений.')
+                    ->maxLength(32),
 
                 TextInput::make('brand')->label('Марка')->nullable(),
                 TextInput::make('model')->label('Модель')->nullable(),

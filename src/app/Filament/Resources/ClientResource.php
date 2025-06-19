@@ -38,9 +38,23 @@ class ClientResource extends Resource
                 TextInput::make('phone')
                     ->label('Телефон')
                     ->mask('+7 (999) 999-99-99')
-                    ->tel()
                     ->placeholder('+7 (___) ___-__-__')
-                    ->maxLength(18),
+                    ->maxLength(18)
+                    ->required()
+                    ->dehydrated() // обязательно: чтобы сохранялось в модель
+                    ->afterStateHydrated(function (TextInput $component, $state) {
+                        // Автоматически форматируем обратно при редактировании записи
+                        $formatted = preg_replace(
+                            '/\+7(\d{3})(\d{3})(\d{2})(\d{2})/',
+                            '+7 ($1) $2-$3-$4',
+                            $state
+                        );
+
+                        $component->state($formatted);
+                    })
+                    ->validationMessages([
+                        'required' => 'Введите номер телефона',
+                    ]),
 
                 TextInput::make('email')
                     ->label('Email')
@@ -54,7 +68,7 @@ class ClientResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')->label('ФИО')->sortable()->searchable(),
-                TextColumn::make('phone')->label('Телефон')->searchable(),
+                TextColumn::make('phone_formatted')->label('Телефон')->searchable(),
                 TextColumn::make('email')->label('Email')->searchable(),
                 TextColumn::make('created_at')->label('Создан')->dateTime('d.m.Y H:i'),
             ])
